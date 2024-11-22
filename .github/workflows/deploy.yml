@@ -1,4 +1,4 @@
-# ssh-keygen -t rsa -b 4096 -C "740302323@qq.com"
+# ssh-keygen -t rsa "740302323@qq.com"
 
 name: Deploy project
 
@@ -26,18 +26,14 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Setup SSH agent
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-public-key: ${{ secrets.SSH_PUBLIC_KEY }}
-
-    - name: Add SSH known hosts
-      run: |
-        ssh-keyscan -H 182.92.177.243/ >> ~/.ssh/known_hosts
-    
-    # - name: Delete old dist
-    #   run: |
-    #     rm -rf /home/nginx/html/dist/*
-    - name: Deploy to customHost
-      run: |
-        scp -r ./dist/* root@182.92.177.243:/home/nginx/html/dist
+    - name: Deploy
+      uses: easingthemes/ssh-deploy@v2.1.1
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        # 先删除
+        ARGS: '-avzr --delete'
+        SOURCE: "./dist/"
+        # IP
+        REMOTE_HOST: ${{ secrets.HOST }}
+        REMOTE_USER: "root"
+        TARGET: "/home/nginx/html/dist"
