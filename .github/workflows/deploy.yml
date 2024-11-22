@@ -34,6 +34,9 @@ jobs:
         # ARGS: '-avzr --delete'
         SOURCE: "./dist/"
         # IP
+        SCRIPT_BEFORE: |
+          whoami
+          ls -al
         REMOTE_HOST: ${{ secrets.HOST }}
         REMOTE_USER: "root"
         TARGET: "/home/nginx/html/dist"
