@@ -34,7 +34,10 @@ jobs:
     - name: Add SSH known hosts
       run: |
         ssh-keyscan -H 182.92.177.243/ >> ~/.ssh/known_hosts
-
+    
+    - name: Delete old dist
+      run: |
+        rm -rf /home/nginx/html/dist/*
     - name: Deploy to customHost
       run: |
-        scp -r ./dist/* root@182.92.177.243:/www/wwwroot/vite-project
+        scp -r ./dist/* root@182.92.177.243:/home/nginx/html/dist
