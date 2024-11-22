@@ -29,11 +29,11 @@ jobs:
     - name: Setup SSH agent
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh-private-key: ${{ secrets.SSH_PUBLIC_KEY }}
 
-    # - name: Add SSH known hosts
-    #   run: |
-    #     ssh-keyscan -H 182.92.177.243/ >> ~/.ssh/known_hosts
+    - name: Add SSH known hosts
+      run: |
+        ssh-keyscan -H 182.92.177.243/ >> ~/.ssh/known_hosts
     
     # - name: Delete old dist
     #   run: |
