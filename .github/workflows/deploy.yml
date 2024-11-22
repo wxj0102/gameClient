@@ -1,0 +1,40 @@
+# ssh-keygen -t rsa -b 4096 -C "740302323@qq.com"
+
+name: Deploy project
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: Setup SSH agent
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Add SSH known hosts
+      run: |
+        ssh-keyscan -H 182.92.177.243/ >> ~/.ssh/known_hosts
+
+    - name: Deploy to customHost
+      run: |
+        scp -r ./dist/* root@182.92.177.243:/www/wwwroot/vite-project
