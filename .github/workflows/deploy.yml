@@ -31,9 +31,9 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    # - name: Add SSH known hosts
-    #   run: |
-    #     ssh-keyscan -H 182.92.177.243/ >> ~/.ssh/known_hosts
+    - name: Add SSH known hosts
+      run: |
+        ssh-keyscan -H 182.92.177.243/ >> ~/.ssh/known_hosts
     
     - name: Delete old dist
       run: |
